@@ -5,117 +5,295 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>手机分期尽调</title>
 <style>
-  :root { color-scheme: light; --bg:#f6f7f4; --card:#fff; --ink:#1c1c1a; --muted:#5c5c56; --line:#e4e2da; --accent:#1f4d3a; }
+  :root { color-scheme: light; --bg:#f4f5f2; --card:#fff; --ink:#1c1c1a; --muted:#5e5e57; --line:#e3e1d8; --accent:#1f4d3a; --info:#e7f0ea; }
   * { box-sizing: border-box; }
-  body { margin: 0; font-family: "Songti SC", "Source Han Serif SC", "Noto Serif SC", serif; background: var(--bg); color: var(--ink); }
-  header, main { width: min(920px, calc(100% - 32px)); margin: 0 auto; }
-  header { padding: 40px 0 12px; }
-  h1 { font-size: 32px; font-weight: 600; margin: 0 0 8px; letter-spacing: 0.02em; }
-  .lead { color: var(--muted); line-height: 1.6; margin: 0; }
-  nav { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px 0 8px; }
-  button, .link { font-family: inherit; font-size: 14px; }
-  nav button, .submit { border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
-  nav button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 16px 8px; margin: 12px 0 20px; }
-  h2 { font-size: 18px; margin: 0 0 8px; }
-  .item { padding: 12px 0; border-top: 1px solid var(--line); }
-  .item:first-of-type { border-top: 0; }
-  .meta { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
-  label { display: block; font-size: 16px; margin-bottom: 6px; }
-  textarea { width: 100%; min-height: 72px; border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: 15px/1.5 "PingFang SC", "Noto Sans SC", sans-serif; resize: vertical; background: #fff; }
-  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 8px 0 16px; }
-  .submit { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .note { color: var(--muted); font-size: 13px; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "PingFang SC", "Noto Sans SC", "Songti SC", sans-serif; }
+  header, main, footer { width: min(980px, calc(100% - 28px)); margin: 0 auto; }
+  header { padding: 36px 0 8px; }
+  h1 { font-size: 32px; margin: 0 0 8px; font-weight: 650; }
+  h2 { font-size: 20px; margin: 0; }
+  h3 { font-size: 17px; margin: 0 0 6px; }
+  .lead, .note { color: var(--muted); line-height: 1.6; }
+  .callout { background: var(--info); border-radius: 10px; padding: 12px 14px; line-height: 1.6; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 14px 0; }
+  .bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, input[type="text"] { font: inherit; }
+  button { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { border-top: 1px solid var(--line); text-align: left; vertical-align: top; padding: 8px 6px; }
+  th { color: var(--muted); font-weight: 600; }
+  .item { padding-top: 8px; }
+  .qhead { display: flex; gap: 8px; align-items: baseline; }
+  textarea { width: 100%; border: 1px solid var(--line); border-radius: 8px; padding: 8px; font: 15px/1.5 inherit; }
+  input.file { display: none; }
+  .fileline { display: flex; gap: 8px; align-items: center; background: #f3f3f0; border-radius: 8px; padding: 6px 8px; margin-top: 6px; }
+  .stats { display: flex; gap: 18px; flex-wrap: wrap; margin: 12px 0; }
+  .stat b { display: block; font-size: 22px; }
+  .stat span { color: var(--muted); font-size: 13px; }
   a { color: var(--accent); }
-  footer { width: min(920px, calc(100% - 32px)); margin: 0 auto 40px; color: var(--muted); font-size: 13px; }
+  footer { color: var(--muted); font-size: 13px; padding-bottom: 36px; }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <header>
   <h1>手机分期尽调</h1>
-  <p class="lead">按角色填写。没填完也可以先提交本角色，之后改完再交一次。数字月份表请下载清单，在 Excel 里填写。带百分号的格子填数字，2 表示 2%。期限按实际产品填写。2026 年 11 月尚未满月，该行留空。</p>
-  <p class="lead"><a href="template.xlsx" download="手机分期尽调清单.xlsx">下载 Excel 清单</a></p>
+  <p class="lead">通用清单。国家、期限、品牌按合作方实际填写。月份数字放在清单 Excel 里，不必在这里逐月重打。客户信息请脱敏。</p>
 </header>
 <main>
-  <nav id="roles"></nav>
-  <div id="list"></div>
-</main>
-<footer>同一笔订单会同时计入获客来源、机型结构、成交渠道，三项分别统计，不得加总。提交会下载该角色已经填写的内容，把文件发回即可。</footer>
-<script>
-const ITEMS = [{"id": "overview", "no": "0.1", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "业务概述", "hint": "城市、品牌、新机和二手如何区分、合同是不是分期买卖、团队主要在哪些城市。"}, {"id": "team", "no": "0.6", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "团队背景与境内业务", "hint": "核心成员的从业经历和职责。境内是否有同类分期，主体、城市、规模，以及与展业地借款主体、担保主体的关系。没有境内业务写无。"}, {"id": "outlook", "no": "0.2", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "未来 12 个月的发展规划", "hint": "品牌、门店、月放款台数。已签约尚未放量的品牌请单独写。二手是否扩大也请说明。"}, {"id": "kpi", "no": "0.3", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "核心业务指标", "hint": "列出内部平时盯的指标，并给最近一个完整月末的数。请注明币种和统计口径。例如月放款台数、在贷余额、件均、期限、审批通过率、不良、终损、品牌搭载率。"}, {"id": "whyraise", "no": "0.4", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "融资用途", "hint": "自有资金和已有借款覆盖不到的部分：在贷增长、新品牌放量，或其他用途。"}, {"id": "howmuch", "no": "0.5", "group": "负责人综述", "dept": "业务负责人", "kind": "text", "prompt": "拟融资金额", "hint": "金额、币种、期限，以及希望什么时候开始用。若与财务在「这次用款」里的额度不同，请注明以哪一个为准。"}, {"id": "eq", "no": "1.1", "group": "一、主体与牌照", "dept": "法务", "kind": "both", "prompt": "股权架构图", "hint": "借款主体和担保主体分开列，不要合成一家。借款主体是持有牌照或不反对函、本次作为借款人的公司。担保主体是提供保证的集团公司或其他公司。同时列对客签约、品牌签约、收款主体。写注册地、持股比例和实控人。可上传架构图。"}, {"id": "parties", "no": "1.1a", "group": "一、主体与牌照", "dept": "法务", "kind": "text", "prompt": "借款主体与担保主体", "hint": "借款主体：全称、注册地、持有的牌照或不反对函。担保主体：全称、注册地、与借款主体的股权关系。多家担保的逐家写。两家的报表、负债和对外担保分开。"}, {"id": "reg", "no": "1.2", "group": "一、主体与牌照", "dept": "法务", "kind": "file", "prompt": "展业地公司注册文件、章程、董事及签字权", "hint": ""}, {"id": "noc", "no": "1.3", "group": "一、主体与牌照", "dept": "法务", "kind": "both", "prompt": "央行不反对函", "hint": "请附原文和译文，并写明出具机关、日期、允许的业务、有效期、可撤销条件。"}, {"id": "paylic", "no": "1.4", "group": "一、主体与牌照", "dept": "法务", "kind": "both", "prompt": "正在申请的支付许可", "hint": "请附申请书和受理回执，写预计获批时间。说明覆盖代收、代付，还是只供自身分期回款。名称以申请文件为准。"}, {"id": "cap", "no": "1.5", "group": "一、主体与牌照", "dept": "法务", "kind": "text", "prompt": "定价与信贷实质", "hint": "规定或指引名称。加价、月费、手续费、押金哪些计入上限。若监管按信贷实质衡量分期买卖，写明穿透口径和贵司的对应结果。不要求另行出具法律意见。"}, {"id": "cashout", "no": "1.5a", "group": "一、主体与牌照", "dept": "法务", "kind": "text", "prompt": "套现的规定和认定", "hint": "当地对以手机分期套取现金的规定。贵司如何认定：不要机器、当场转卖、拆机卖零件、首付异常、同一收款账户集中。近 12 个月认定的笔数、金额和处理。"}, {"id": "contracts", "no": "1.6", "group": "一、主体与牌照", "dept": "法务", "kind": "both", "prompt": "C 端协议全套", "hint": "客户实际签署的全部文件，不要只给分期买卖合同。按实际在售期限各附一份合同和还款计划，另附锁机与解锁授权、个人信息授权、代扣或钱包授权、交付确认。另有押金、提前结清、用户协议或隐私政策的一并附上。二手另有成色或货权确认的，单独附上。标明签署时点，以及所有权转移、锁机、解除、取回、违约金、提前结清写在哪一份、哪一条。"}, {"id": "storeagree", "no": "1.7", "group": "一、主体与牌照", "dept": "运营", "kind": "file", "prompt": "与店主、与导购的协议范本", "hint": ""}, {"id": "fs", "no": "1.8", "group": "一、主体与牌照", "dept": "财务", "kind": "both", "prompt": "近 12 个月报表、纳税申报和主要银行流水", "hint": "借款主体、担保主体各自提供。有审计报告的上传审计报告，没有则给管理报表。对外担保和关联方往来按主体分开。"}, {"id": "rule", "no": "2.0", "group": "产品", "dept": "财务", "kind": "text", "prompt": "标准息费规则", "hint": "按实际在售产品分行。与获客来源、机型结构、成交渠道分开填列，也不要套成 3、6、9 期。每种期限、新机或二手各写加价、月费、手续费、押金的规则和基数。月费按放款额还是成交价。"}, {"id": "shape", "no": "2.0b", "group": "产品", "dept": "财务", "kind": "both", "prompt": "现金流形态", "hint": "客户按期偿还、不提前结清时，每一期收回的本金、息费和期末剩余本金。以放款本金 100 为基数。期次按该产品的期限逐期填写。"}, {"id": "prepayRule", "no": "2.0c", "group": "产品", "dept": "财务", "kind": "text", "prompt": "提前还款", "hint": "是否接受。最早可在哪一期提出。已到期息费、未到期息费、违约金、押金分别怎么处理，写出计算公式。不接受的写不接受。"}, {"id": "cfmodel", "no": "2.0d", "group": "产品", "dept": "财务", "kind": "file", "prompt": "现金流模型", "hint": "标准规则下的逐期现金流，以及提前还款后的重算结果。模型假设写明放款本金、期限、是否含提前还款。输出应与现金流形态一致。"}, {"id": "price", "no": "2.1", "group": "二、单笔交易", "dept": "运营", "kind": "text", "prompt": "标价、成交价、加价", "hint": "用一笔已放款且至少还过一期的真实订单，客户信息脱敏。写明加价记在谁的收入里。该笔适用的产品规则与「标准息费规则」一致。"}, {"id": "dp", "no": "2.2", "group": "二、单笔交易", "dept": "财务", "kind": "text", "prompt": "首付比例和金额，付给谁，哪一天进账", "hint": ""}, {"id": "advance", "no": "2.3", "group": "二、单笔交易", "dept": "财务", "kind": "both", "prompt": "当天垫付给店主的金额", "hint": "基数是进货价、零售价还是加价后的价格。请对上银行回单。"}, {"id": "deposit", "no": "2.4", "group": "二、单笔交易", "dept": "财务", "kind": "text", "prompt": "押金", "hint": "金额、存放账户、最后一期如何抵扣。客户中途违约时押金如何处理。押金不计入收入。"}, {"id": "fee", "no": "2.5", "group": "二、单笔交易", "dept": "财务", "kind": "text", "prompt": "手续费金额和收取时点", "hint": ""}, {"id": "formula", "no": "2.6", "group": "二、单笔交易", "dept": "运营", "kind": "text", "prompt": "每期应还的算法", "hint": "这一笔的公式。标准规则见产品，不在这里另写一套。"}, {"id": "bridge", "no": "3.1", "group": "三、收益桥", "dept": "财务", "kind": "both", "prompt": "按放款本金拆开的收入和成本", "hint": "请区分最近 12 个月实际和全年预测。收入列加价、月费、手续费、逾期收费、锁机后回收。成本列终损、技术与系统、电话提醒与审核、当地运营和客服、市场人员、导购提成、税、收款通道、汇兑。导购提成是否已含在管理成本里，请说明。可上传表格。"}, {"id": "prepay", "no": "3.2", "group": "三、收益桥", "dept": "财务", "kind": "text", "prompt": "提前结清占比，以及结清后少收的费用", "hint": "实际发生的占比和少收金额。息费怎么算见产品里的提前还款。"}, {"id": "margin", "no": "3.3", "group": "三、收益桥", "dept": "财务", "kind": "text", "prompt": "净利比例的分母", "hint": "若对外讲过一个净利比例，请写明它占放款本金、占收入，还是其他口径。不要只给一个比例。"}, {"id": "def", "no": "4.1", "group": "四、资产表现", "dept": "风险", "kind": "text", "prompt": "不良和终损的定义", "hint": "写明逾期天数、分子分母是否含已结清、核销规则。请说明当前不良和终损是已观察到的数，还是外推。"}, {"id": "vintage", "no": "4.2", "group": "四、资产表现", "dept": "风险", "kind": "file", "prompt": "按放款月的静态池", "hint": "从起量月到最近完整月末。请含笔数、放款金额、期限、品牌、新机或二手、城市、首付分档、通过率、第 1 到第 12 个月逾期金额、已核销、锁机后回收、提前结清。期限按实际产品，不要套成 3、6、9。已走完期限的月份和近三个月分开，近端终损请标注为预测。二手不要并进新机。有原表可只附原表。"}, {"id": "book", "no": "4.3", "group": "四、资产表现", "dept": "财务", "kind": "both", "prompt": "在贷余额勾稽", "hint": "笔数、剩余本金、剩余期数、逾期分档。请给人民币和塔卡两列，并写汇率。累放请拆成在贷、已结清、已核销。"}, {"id": "cure", "no": "4.4", "group": "四、资产表现", "dept": "风险", "kind": "text", "prompt": "逾期后的锁机、回款和处置", "hint": "进入逾期后多少天锁机，锁机后多少天回款。解锁时点、是否收费、归还对象和残值记账，与「解锁与归还手机」保持同一口径。"}, {"id": "cuts", "no": "4.5", "group": "四、资产表现", "dept": "风险", "kind": "file", "prompt": "按品牌、城市、门店、首付、期限的坏账对比", "hint": "主要城市以外请单独列出。可上传现有报表。"}, {"id": "fraud", "no": "4.6", "group": "四、资产表现", "dept": "风险", "kind": "text", "prompt": "重复进件和门店集中度", "hint": "同一客户、同一设备、同一收款账户、同一门店的重复情况。前 20 家门店占放款的比例。导购提成是否只在放款成功后发放。另给欺诈案件发生率及口径，以及伪冒、串货、门店集中发生后的处理。"}, {"id": "runoff", "no": "4.7", "group": "四、资产表现", "dept": "风险", "kind": "file", "prompt": "余额衰减", "hint": "每个放款月在放款当月末到第 12 个月末的剩余本金，核销前、含逾期。按实际期限分块，块名自己写。二手单独。未走到的月份留空。有原表可只附原表。"}, {"id": "fpd", "no": "4.8", "group": "四、资产表现", "dept": "风险", "kind": "file", "prompt": "首期逾期", "hint": "首期账单逾期满 7 天、满 30 天的笔数和本金。达到天数后即计入，其后还款不改。新机与二手分开。近三个月首期尚未走完的留空。"}, {"id": "segment", "no": "4.9", "group": "四、资产表现", "dept": "风险", "kind": "file", "prompt": "结构与逾期", "hint": "按期限、品牌、新旧、城市、首付、放款额、年龄。每个分类给累放金额、累放笔数、在贷余额，以及逾期 1 天、30 天、90 天以上余额。城市分主要城市和其他。期限和品牌按实际填写。"}, {"id": "person", "no": "5.0", "group": "五、获客、机型与渠道", "dept": "运营", "kind": "both", "prompt": "获客来源", "hint": "门店导购、自然到店、线上投放、其他。按自然月填列进件、成交、放款及获客成本。成本含该来源的导购提成或线上投放，并计算占该来源放款本金的比例。与机型结构、成交渠道分别统计，不得加总。"}, {"id": "sku", "no": "5.0b", "group": "五、获客、机型与渠道", "dept": "运营", "kind": "both", "prompt": "机型结构", "hint": "只填最近一个完整月末。品牌合计按品牌分行。具体型号只列该月放款本金前 20。新机和二手分开。"}, {"id": "place", "no": "5.0c", "group": "五、获客、机型与渠道", "dept": "运营", "kind": "both", "prompt": "成交渠道", "hint": "App、H5、门店。App 和 H5 为线上，门店为线下。按自然月填列进件、成交、放款。获客成本仅在获客来源中填列。"}, {"id": "exclusive", "no": "5.1", "group": "五、渠道与品牌", "dept": "法务", "kind": "both", "prompt": "已签约品牌的合作协议要点", "hint": "品牌名称按实际填写。期限、排他范围、搭载率或销量承诺、品牌方可解除的情形。全文有保密义务的，写要点或约定见面查阅。"}, {"id": "xiaomi", "no": "5.2", "group": "五、渠道与品牌", "dept": "法务", "kind": "text", "prompt": "新签约或非排他品牌的合作范围", "hint": "是否排他、已开放的门店和机型、品牌方可解除的情形。尚未签约的写进度。"}, {"id": "stores", "no": "5.3", "group": "五、渠道与品牌", "dept": "运营", "kind": "text", "prompt": "门店、导购与线下操作", "hint": "门店数量、自营或综合店、城市、月放款、导购人数、巡店频率。导购代填、虚假进件、与店主分单、飞单的发现、处罚和近 12 个月处理件数。进件和放款已按获客来源、机型结构、成交渠道分开，不在这里合并。"}, {"id": "approve", "no": "5.4", "group": "五、渠道与品牌", "dept": "风险", "kind": "both", "prompt": "审批通过率", "hint": "分母是进件还是资料填齐。拒绝原因分布，以及 10 笔拒绝、10 笔通过的脱敏样例。放款前完成的核验：身份证、活体或人脸、SIM、设备号。年龄和职业是否设限。放款后到锁机前还看哪些变化。"}, {"id": "attach", "no": "5.5", "group": "五、渠道与品牌", "dept": "运营", "kind": "file", "prompt": "品牌月销量和分期搭载率", "hint": "请附原始统计，并写明统计月份。搭载率的分母请注明是品牌出货还是可做分期的门店销量。"}, {"id": "lock", "no": "6.1", "group": "六、锁机、客诉与贷后", "dept": "技术", "kind": "both", "prompt": "品牌官方锁", "hint": "写明是哪些品牌的官方锁。授权文件。锁的是主板还是系统账号，现场如何激活。断网、刷机、换板、拆机之后锁是否还在。误锁、解锁收费、解锁失败的处理和时限。"}, {"id": "bypass", "no": "6.2", "group": "六、锁机、客诉与贷后", "dept": "风险", "kind": "text", "prompt": "锁机、绕锁与误锁", "hint": "近 12 个月锁机成功率、失败原因、绕锁数量、误锁数量、解锁失败数量，以及因此核销的金额。"}, {"id": "ilock", "no": "6.3", "group": "六、锁机、客诉与贷后", "dept": "技术", "kind": "text", "prompt": "二手机器使用的锁", "hint": "自研还是外购，与官方锁的权限差异，绕锁率，误锁后多久能解开。"}, {"id": "complaint", "no": "6.4", "group": "六、锁机、客诉与贷后", "dept": "运营", "kind": "both", "prompt": "客诉与消费者保护", "hint": "近 6 个月投诉量，占放款笔数和在贷笔数的比例。事由结构：锁机、收费、押金、机器质量、解锁。升级到品牌或监管的数量。监管或消保对投诉率、回复时效的要求。品牌是否把客诉率当作继续合作的条件。台账请脱敏。"}, {"id": "collect", "no": "6.5", "group": "六、锁机、客诉与贷后", "dept": "运营", "kind": "text", "prompt": "贷后安排", "hint": "电话提醒的时点、是否上门或委托第三方。当地审核、提醒、客服、市场的人数，以及这些费用是否已包含在管理成本里。"}, {"id": "quality", "no": "6.6", "group": "六、锁机、客诉与贷后", "dept": "运营", "kind": "text", "prompt": "非客户违约的机器质量", "hint": "分期继续还是终止，损失由品牌、店主还是贵司承担。"}, {"id": "accts", "no": "7.1", "group": "七、账户、支付与外汇", "dept": "财务", "kind": "text", "prompt": "收款账户和付款账户", "hint": "客户还款进哪个账户，垫付给店主从哪个账户出。请说明有无与经营无关的资金进出。"}, {"id": "channel", "no": "7.2", "group": "七、账户、支付与外汇", "dept": "财务", "kind": "both", "prompt": "收款通道、费率与支付风险", "hint": "最近三个月通道费账单。付款若走银行，请注明。近 12 个月通道中断、重复扣款、错账、商户号冻结或限额的情况，以及备用通道。"}, {"id": "inflow", "no": "7.3", "group": "七、账户、支付与外汇", "dept": "资金", "kind": "both", "prompt": "资金进入展业地的路径", "hint": "币种、科目（资本金、股东借款或其他）、已办的备案、在途时间。已投入资金请对应到银行凭证，可上传。"}, {"id": "outflow", "no": "7.4", "group": "七、账户、支付与外汇", "dept": "资金", "kind": "text", "prompt": "还款和利润汇出", "hint": "实际汇出过的金额、尚未汇出的金额、平均在途时间。审批文件见面核对。塔卡换成人民币或美元的现行做法。"}, {"id": "fxgl", "no": "7.5", "group": "七、账户、支付与外汇", "dept": "财务", "kind": "file", "prompt": "汇兑损益底稿", "hint": "按月列出放款汇率、回收汇率、未回收余额的重估。可上传。"}, {"id": "tax", "no": "7.6", "group": "七、账户、支付与外汇", "dept": "财务", "kind": "text", "prompt": "税种及缴纳主体", "hint": ""}, {"id": "usedmix", "no": "8.1", "group": "八、二手", "dept": "风险", "kind": "both", "prompt": "二手单独成池", "hint": "品牌和型号按实际填写。笔数和金额占比、件均、期限、首付、逾期和回收。不要并进新机平均。可上传表格。"}, {"id": "source", "no": "8.2", "group": "八、二手", "dept": "运营", "kind": "text", "prompt": "货源和货权", "hint": "店主发票和完税证明是否作为进件条件。合同如何约定货权。若机器未完税，对锁机、取回和资产是否有影响。"}, {"id": "recycle", "no": "8.3", "group": "八、二手", "dept": "运营", "kind": "text", "prompt": "回收业务的现状", "hint": "已经在做的，写流程和损益。还在计划中的，本次额度里不计入。"}, {"id": "deploy", "no": "9.1", "group": "九、系统与对接", "dept": "技术", "kind": "text", "prompt": "进件、审批、锁机、账务分别部署在哪个城市，数据是否传到展业地以外，备份和权限如何安排", "hint": ""}, {"id": "export", "no": "9.2", "group": "九、系统与对接", "dept": "技术", "kind": "text", "prompt": "字段导出情况", "hint": "申请号、门店、品牌、型号、新机或二手、期限、首付、放款额、还款计划、实还、逾期天数、锁机状态、核销、回收。本轮说明能否导出即可，先不要发全量明细。"}, {"id": "recon", "no": "9.3", "group": "九、系统与对接", "dept": "财务", "kind": "both", "prompt": "账务与银行、通道的对账频率，以及最近一次差异", "hint": ""}, {"id": "appstore", "no": "9.4", "group": "九、系统与对接", "dept": "技术", "kind": "text", "prompt": "应用上架与下架", "hint": "客户 App 或进件工具的上架渠道、发包要求、当前版本。下架或被拒的时间、原因和恢复方式。没有独立 App 的，写明实际使用的载体。"}, {"id": "plan", "no": "10.1", "group": "十、这次用款", "dept": "财务", "kind": "text", "prompt": "未来 12 个月分品牌的放款计划", "hint": "台数、件均、期限、所需投放、预计在贷峰值。请说明台数是品牌销量还是可放款，搭载率怎么取。"}, {"id": "ticket", "no": "10.2", "group": "十、这次用款", "dept": "财务", "kind": "text", "prompt": "自有资金、已有借款、希望合作的额度、期限和币种", "hint": "合作资产是大盘按比例切分，还是指定品牌、指定门店。若是子集，请说明历史表现是否差于大盘。"}, {"id": "enhance", "no": "10.3", "group": "十、这次用款", "dept": "财务", "kind": "text", "prompt": "担保主体的增信", "hint": "担保主体提供的保证、回购、差额补足或其他。写担保范围、期限、净资产、在途担保和可执行财产。借款主体自身不出具这份保证。"}, {"id": "ringfence", "no": "10.4", "group": "十、这次用款", "dept": "财务", "kind": "text", "prompt": "收款账户监管和逐笔对应", "hint": "哪些收款账户可以监管，应收账款能否对应到每一笔设备。"}, {"id": "funders", "no": "10.5", "group": "十、这次用款", "dept": "财务", "kind": "both", "prompt": "其他合作资金", "hint": "机构、机构类型、累计放款、合作额度、合作方式、在贷余额、开始年月。没有则写无。"}, {"id": "delivery", "no": "6.7", "group": "六、锁机、客诉与贷后", "dept": "运营", "kind": "text", "prompt": "拆机与转卖", "hint": "如何确认机器交给该客户。拆机、换板、转卖如何发现，当地规定如何认定，损失由品牌、店主还是贵司承担。新机和二手都写。"}, {"id": "unlockReturn", "no": "6.8", "group": "六、锁机、客诉与贷后", "dept": "运营", "kind": "text", "prompt": "解锁与归还手机", "hint": "正常还清、提前结清、逾期取回三种情形下，何时解锁、是否收费、由谁操作。手机在什么条件下归还：归还给客户、店主还是贵司，验收标准，残值记在谁的账上。近 12 个月归还笔数和对应本金。"}, {"id": "usedReturn", "no": "8.5", "group": "八、二手", "dept": "运营", "kind": "text", "prompt": "二手质量与退换货", "hint": "二手进件时的成色、功能和质检标准。退货、换货的期限、条件和流程，分期继续还是终止。近 12 个月退换笔数、金额，以及损失由品牌、店主还是贵司承担。新机退换若规则不同，分开写。"}, {"id": "tpl-risk", "no": "数.1", "group": "数据表", "dept": "风险", "kind": "file", "prompt": "资产质量原表", "hint": "账龄、迁徙、余额衰减、首期逾期如有系统原表，可附上。没有逐日回收的列留空。未观察到的月份留空。"}, {"id": "tpl-asset", "no": "数.2", "group": "数据表", "dept": "财务", "kind": "file", "prompt": "收益与成本原表", "hint": "资金成本、随单运营和已结清资产的实还月数。对照年化只作对照。人员、税、汇兑不摊入放款月。"}];
-const ORDER = ["业务负责人","法务","财务","运营","风险","技术","资金"];
-const KEY = "phone-installment-dd-v1";
-const saved = JSON.parse(localStorage.getItem(KEY) || "{}");
-let role = "全部";
+  <p class="callout">不同角色只提交自己的栏。未填完也可以先交，之后改完再交一次。带 % 的黄格填数字，2 表示 2%。期限按实际产品填，不要套成 3、6、9 期。月度表预置 2025-12 至 2026-10，2026-11 未满月留空。新机和二手分开。数字填 Excel。协议和流水按文件夹另交。</p>
 
-function esc(s) {
-  return String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
+  <section class="card" id="workbook">
+    <h2>清单 Excel</h2>
+    <p class="note">先下载空白模板，在 Excel 里备好数字，再把同一份文件上传。小于 400KB 会整份留下，并可再下载；更大的只记录文件名。</p>
+    <div class="bar">
+      <a class="primary" href="template.xlsx" download="手机分期尽调清单.xlsx" style="text-decoration:none;border-radius:999px;padding:6px 12px;background:#1f4d3a;color:#fff;">下载空白模板</a>
+      <button type="button" id="pick-book">上传已填清单</button>
+      <input id="book-file" class="file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+    </div>
+    <div id="book-line"></div>
+  </section>
+
+  <section>
+    <h2>数据口径</h2>
+    <p class="note">按数据性质分成四类。观察截止最近一个完整月末。比例的分母在口径列写明。</p>
+    <section class="card"><h3>放款与结构</h3><p class="note">放了多少、从哪来、卖的什么、在哪成交。获客来源、机型结构、成交渠道分别统计，不得加总。</p><table><thead><tr><th>数据</th><th>字段</th><th>观察时点</th><th>口径</th></tr></thead><tbody><tr><td>放款</td><td>放款件数、放款本金、成交价、件均、平均首付、平均期限</td><td>放款月</td><td>本金为垫付给店主的金额</td></tr><tr><td>进件</td><td>进件笔数、审批通过笔数、通过率、成交笔数、成交率</td><td>自然月</td><td>只填合计，用来和获客来源、机型结构、成交渠道勾稽</td></tr><tr><td>获客来源</td><td>来源、进件笔数、成交笔数、放款本金、获客成本</td><td>自然月</td><td>来源为门店导购、自然到店、线上投放、其他。成本占该来源放款本金</td></tr><tr><td>机型结构</td><td>品牌、型号、新机或二手、成交笔数、放款本金</td><td>最近完整月末</td><td>品牌合计按品牌分行。具体型号只列该月放款本金前 20</td></tr><tr><td>成交渠道</td><td>渠道、入口、进件笔数、成交笔数、放款本金</td><td>自然月</td><td>入口为 App、H5、门店。App 和 H5 为线上，门店为线下</td></tr><tr><td>客户结构</td><td>城市、期限、品牌、新旧、首付、放款额、年龄、职业</td><td>最近完整月末</td><td>各分类占比。已填「结构与逾期」的金额和逾期余额时，本项可不填</td></tr></tbody></table></section>
+<section class="card"><h3>产品与收费</h3><p class="note">标准息费，以及实际收到的收费。现金流以放款本金 100 为基数。</p><table><thead><tr><th>数据</th><th>字段</th><th>观察时点</th><th>口径</th></tr></thead><tbody><tr><td>产品</td><td>息费规则、按期现金流、提前还款算法</td><td>产品</td><td>按实际期限分行。期次按该产品期限填写，没有的行留空</td></tr><tr><td>收费</td><td>加价、月费、手续费、其他收费、应收合计、实收收费、逾期收费</td><td>放款月</td><td>占放款本金。实收单独记录，不用应收减损失倒挤</td></tr></tbody></table></section>
+<section class="card"><h3>资产质量</h3><p class="note">在贷、逾期和回收。未走到的账龄留空，不要填 0。新机与二手分开。</p><table><thead><tr><th>数据</th><th>字段</th><th>观察时点</th><th>口径</th></tr></thead><tbody><tr><td>在贷</td><td>月末在贷笔数、月末在贷本金</td><td>自然月末</td><td>含逾期，不含已核销。各档之和应与逾期阶段合计一致</td></tr><tr><td>逾期阶段</td><td>未逾期、1–30 天、31–60 天、61–90 天、90 天以上</td><td>自然月末</td><td>各档为剩余本金</td></tr><tr><td>结构与逾期</td><td>期限、品牌、新旧、城市、首付、放款额、年龄</td><td>最近完整月末</td><td>每个分类给累放金额、累放笔数、在贷余额，以及逾期 1 天、30 天、90 天以上余额</td></tr><tr><td>首期逾期</td><td>首期账单逾期满 7 天、满 30 天的笔数和本金</td><td>放款月</td><td>达到天数后即计入，其后还款不改</td></tr><tr><td>账龄</td><td>MOB1 至 MOB12</td><td>放款月</td><td>逾期满 30 天的剩余本金 / 该月放款本金</td></tr><tr><td>入催</td><td>大盘、首期、新机、二手</td><td>到期月</td><td>逾期达到 1 天的本金 / 当月到期本金</td></tr><tr><td>回收</td><td>逾期第 5、10、15、30、60、90 天仍未还本金；首期及全部到期的 30 天回收</td><td>到期月</td><td>相对逾期第 1 天本金的下降。另列锁机后 30 天回款</td></tr><tr><td>迁徙</td><td>M0 至 M6+ 的余额和笔数</td><td>自然月末</td><td>本月末本阶段余额 / 上月末上一阶段余额</td></tr><tr><td>余额衰减</td><td>放款当月末至第 12 个月末的剩余本金</td><td>放款月</td><td>核销前，含逾期。按实际期限分块。未走到的月份留空</td></tr></tbody></table></section>
+<section class="card"><h3>收益、成本与资金</h3><p class="note">放款月结果的分母是该月放款本金。人员、税、汇兑留在自然月，不摊入放款月。</p><table><thead><tr><th>数据</th><th>字段</th><th>观察时点</th><th>口径</th></tr></thead><tbody><tr><td>损失</td><td>本金损失、收费损失</td><td>放款月</td><td>占放款本金。本金损失扣除处置收回的净额</td></tr><tr><td>结清调整</td><td>展期或结清调整</td><td>放款月</td><td>占放款本金。提前结清少收记为负。无展期填 0</td></tr><tr><td>直接成本</td><td>导购提成、收款通道、资金成本、随单运营</td><td>放款月</td><td>导购提成合计应与获客来源的成本合计一致</td></tr><tr><td>放款月结果</td><td>息差、毛收益、息差金额、毛收益金额、平均实还月数、对照年化</td><td>放款月</td><td>息差 = 实收 + 逾期收费 + 结清调整 − 两项损失。毛收益再减直接成本。对照年化 = 毛收益比例 × 12 / 已结清资产的平均实还月数，只作对照</td></tr><tr><td>自然月</td><td>月末在贷、当月放款、当月实收、当月核销、收费损失、直接成本</td><td>自然月</td><td>核销是当月移出在贷的本金。在贷应与逾期阶段合计一致</td></tr><tr><td>合作资金</td><td>机构、机构类型、累计放款、合作额度、合作方式、在贷余额、开始年月</td><td>最近完整月末</td><td>占比按累计放款计算。没有其他资金方记为无</td></tr></tbody></table></section>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><b id="st-filled">0/75</b><span>材料已提供</span></div>
+    <div class="stat"><b id="st-files">0</b><span>已选文件</span></div>
+    <div class="stat"><b id="st-sub">0/75</b><span>已提交项</span></div>
+  </div>
+
+  <div class="bar" style="margin:8px 0">
+    <strong>金额单位</strong>
+    <select id="currency">
+      <option>人民币</option><option>美元</option><option>当地货币</option><option>塔卡</option>
+    </select>
+    <strong>对接人</strong>
+    <input id="filler" type="text" placeholder="姓名" style="width:160px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;" />
+  </div>
+  <div class="bar" id="scopes">
+    <button type="button" class="scope active" data-scope="全部">全部材料</button>
+    <button type="button" class="scope" data-scope="数据">数据表</button>
+  </div>
+  <div class="bar" id="depts" style="margin-top:8px">
+    <button type="button" class="dept active" data-dept="全部">全部</button><button type="button" class="dept" data-dept="运营">运营</button><button type="button" class="dept" data-dept="风险">风险</button><button type="button" class="dept" data-dept="财务">财务</button><button type="button" class="dept" data-dept="法务">法务</button><button type="button" class="dept" data-dept="技术">技术</button><button type="button" class="dept" data-dept="资金">资金</button><button type="button" class="dept" data-dept="业务负责人">业务负责人</button>
+  </div>
+  <label class="note"><input id="only-open" type="checkbox" /> 只看还没提供的</label>
+  <div class="bar" id="role-submit" style="margin-top:8px"></div>
+
+  <section class="card material" data-group="负责人综述"><div class="bar"><h2>负责人综述</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="overview" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.1 业务概述</strong><span class="done" hidden>已提供</span></div><p class="note">城市、品牌、新机和二手如何区分、合同是不是分期买卖、团队主要在哪些城市。</p><textarea data-id="overview" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="team" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.6 团队背景与境内业务</strong><span class="done" hidden>已提供</span></div><p class="note">核心成员的从业经历和职责。境内是否有同类分期，主体、城市、规模，以及与展业地借款主体、担保主体的关系。没有境内业务写无。</p><textarea data-id="team" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="outlook" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.2 未来 12 个月的发展规划</strong><span class="done" hidden>已提供</span></div><p class="note">品牌、门店、月放款台数。已签约尚未放量的品牌请单独写。二手是否扩大也请说明。</p><textarea data-id="outlook" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="kpi" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.3 核心业务指标</strong><span class="done" hidden>已提供</span></div><p class="note">列出内部平时盯的指标，并给最近一个完整月末的数。请注明币种和统计口径。例如月放款台数、在贷余额、件均、期限、审批通过率、不良、终损、品牌搭载率。</p><textarea data-id="kpi" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="whyraise" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.4 融资用途</strong><span class="done" hidden>已提供</span></div><p class="note">自有资金和已有借款覆盖不到的部分：在贷增长、新品牌放量，或其他用途。</p><textarea data-id="whyraise" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="howmuch" data-dept="业务负责人" data-wave="先发" data-group="负责人综述"><div class="qhead"><strong>0.5 拟融资金额</strong><span class="done" hidden>已提供</span></div><p class="note">金额、币种、期限，以及希望什么时候开始用。若与财务在「这次用款」里的额度不同，请注明以哪一个为准。</p><textarea data-id="howmuch" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="一、主体与牌照"><div class="bar"><h2>一、主体与牌照</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="eq" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.1 股权架构图</strong><span class="done" hidden>已提供</span></div><p class="note">借款主体和担保主体分开列，不要合成一家。借款主体是持有牌照或不反对函、本次作为借款人的公司。担保主体是提供保证的集团公司或其他公司。同时列对客签约、品牌签约、收款主体。写注册地、持股比例和实控人。可上传架构图。</p><textarea data-id="eq" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="eq"><div class="bar"><button type="button" class="pick" data-id="eq">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="eq" type="file" multiple /><div class="filelist" data-list="eq"></div></div><hr /></article><article class="item" data-id="parties" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.1a 借款主体与担保主体</strong><span class="done" hidden>已提供</span></div><p class="note">借款主体：全称、注册地、持有的牌照或不反对函。担保主体：全称、注册地、与借款主体的股权关系。多家担保的逐家写。两家的报表、负债和对外担保分开。</p><textarea data-id="parties" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="reg" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.2 展业地公司注册文件、章程、董事及签字权</strong><span class="done" hidden>已提供</span></div><textarea data-id="reg" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="reg"><div class="bar"><button type="button" class="pick" data-id="reg">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="reg" type="file" multiple /><div class="filelist" data-list="reg"></div></div><hr /></article><article class="item" data-id="noc" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.3 央行不反对函</strong><span class="done" hidden>已提供</span></div><p class="note">请附原文和译文，并写明出具机关、日期、允许的业务、有效期、可撤销条件。</p><textarea data-id="noc" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="noc"><div class="bar"><button type="button" class="pick" data-id="noc">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="noc" type="file" multiple /><div class="filelist" data-list="noc"></div></div><hr /></article><article class="item" data-id="paylic" data-dept="法务" data-wave="补齐" data-group="一、主体与牌照"><div class="qhead"><strong>1.4 正在申请的支付许可</strong><span class="done" hidden>已提供</span></div><p class="note">请附申请书和受理回执，写预计获批时间。说明覆盖代收、代付，还是只供自身分期回款。名称以申请文件为准。</p><textarea data-id="paylic" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="paylic"><div class="bar"><button type="button" class="pick" data-id="paylic">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="paylic" type="file" multiple /><div class="filelist" data-list="paylic"></div></div><hr /></article><article class="item" data-id="cap" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.5 定价与信贷实质</strong><span class="done" hidden>已提供</span></div><p class="note">规定或指引名称。加价、月费、手续费、押金哪些计入上限。若监管按信贷实质衡量分期买卖，写明穿透口径和贵司的对应结果。不要求另行出具法律意见。</p><textarea data-id="cap" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="cashout" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.5a 套现的规定和认定</strong><span class="done" hidden>已提供</span></div><p class="note">当地对以手机分期套取现金的规定。贵司如何认定：不要机器、当场转卖、拆机卖零件、首付异常、同一收款账户集中。近 12 个月认定的笔数、金额和处理。</p><textarea data-id="cashout" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="contracts" data-dept="法务" data-wave="先发" data-group="一、主体与牌照"><div class="qhead"><strong>1.6 C 端协议全套</strong><span class="done" hidden>已提供</span></div><p class="note">客户实际签署的全部文件，不要只给分期买卖合同。按实际在售期限各附一份合同和还款计划，另附锁机与解锁授权、个人信息授权、代扣或钱包授权、交付确认。另有押金、提前结清、用户协议或隐私政策的一并附上。二手另有成色或货权确认的，单独附上。标明签署时点，以及所有权转移、锁机、解除、取回、违约金、提前结清写在哪一份、哪一条。</p><textarea data-id="contracts" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="contracts"><div class="bar"><button type="button" class="pick" data-id="contracts">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="contracts" type="file" multiple /><div class="filelist" data-list="contracts"></div></div><hr /></article><article class="item" data-id="storeagree" data-dept="运营" data-wave="补齐" data-group="一、主体与牌照"><div class="qhead"><strong>1.7 与店主、与导购的协议范本</strong><span class="done" hidden>已提供</span></div><textarea data-id="storeagree" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="storeagree"><div class="bar"><button type="button" class="pick" data-id="storeagree">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="storeagree" type="file" multiple /><div class="filelist" data-list="storeagree"></div></div><hr /></article><article class="item" data-id="fs" data-dept="财务" data-wave="补齐" data-group="一、主体与牌照"><div class="qhead"><strong>1.8 近 12 个月报表、纳税申报和主要银行流水</strong><span class="done" hidden>已提供</span></div><p class="note">借款主体、担保主体各自提供。有审计报告的上传审计报告，没有则给管理报表。对外担保和关联方往来按主体分开。</p><textarea data-id="fs" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="fs"><div class="bar"><button type="button" class="pick" data-id="fs">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="fs" type="file" multiple /><div class="filelist" data-list="fs"></div></div><hr /></article></section>
+<section class="card material" data-group="产品"><div class="bar"><h2>产品</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="rule" data-dept="财务" data-wave="先发" data-group="产品"><div class="qhead"><strong>2.0 标准息费规则</strong><span class="done" hidden>已提供</span></div><p class="note">按实际在售产品分行。与获客来源、机型结构、成交渠道分开填列，也不要套成 3、6、9 期。每种期限、新机或二手各写加价、月费、手续费、押金的规则和基数。月费按放款额还是成交价。</p><textarea data-id="rule" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="shape" data-dept="财务" data-wave="先发" data-group="产品"><div class="qhead"><strong>2.0b 现金流形态</strong><span class="done" hidden>已提供</span></div><p class="note">客户按期偿还、不提前结清时，每一期收回的本金、息费和期末剩余本金。以放款本金 100 为基数。期次按该产品的期限逐期填写。</p><textarea data-id="shape" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="shape"><div class="bar"><button type="button" class="pick" data-id="shape">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="shape" type="file" multiple /><div class="filelist" data-list="shape"></div></div><hr /></article><article class="item" data-id="prepayRule" data-dept="财务" data-wave="先发" data-group="产品"><div class="qhead"><strong>2.0c 提前还款</strong><span class="done" hidden>已提供</span></div><p class="note">是否接受。最早可在哪一期提出。已到期息费、未到期息费、违约金、押金分别怎么处理，写出计算公式。不接受的写不接受。</p><textarea data-id="prepayRule" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="cfmodel" data-dept="财务" data-wave="先发" data-group="产品"><div class="qhead"><strong>2.0d 现金流模型</strong><span class="done" hidden>已提供</span></div><p class="note">标准规则下的逐期现金流，以及提前还款后的重算结果。模型假设写明放款本金、期限、是否含提前还款。输出应与现金流形态一致。</p><textarea data-id="cfmodel" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="cfmodel"><div class="bar"><button type="button" class="pick" data-id="cfmodel">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="cfmodel" type="file" multiple /><div class="filelist" data-list="cfmodel"></div></div><hr /></article></section>
+<section class="card material" data-group="二、单笔交易"><div class="bar"><h2>二、单笔交易</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="price" data-dept="运营" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.1 标价、成交价、加价</strong><span class="done" hidden>已提供</span></div><p class="note">用一笔已放款且至少还过一期的真实订单，客户信息脱敏。写明加价记在谁的收入里。该笔适用的产品规则与「标准息费规则」一致。</p><textarea data-id="price" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="dp" data-dept="财务" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.2 首付比例和金额，付给谁，哪一天进账</strong><span class="done" hidden>已提供</span></div><textarea data-id="dp" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="advance" data-dept="财务" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.3 当天垫付给店主的金额</strong><span class="done" hidden>已提供</span></div><p class="note">基数是进货价、零售价还是加价后的价格。请对上银行回单。</p><textarea data-id="advance" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="advance"><div class="bar"><button type="button" class="pick" data-id="advance">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="advance" type="file" multiple /><div class="filelist" data-list="advance"></div></div><hr /></article><article class="item" data-id="deposit" data-dept="财务" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.4 押金</strong><span class="done" hidden>已提供</span></div><p class="note">金额、存放账户、最后一期如何抵扣。客户中途违约时押金如何处理。押金不计入收入。</p><textarea data-id="deposit" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="fee" data-dept="财务" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.5 手续费金额和收取时点</strong><span class="done" hidden>已提供</span></div><textarea data-id="fee" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="formula" data-dept="运营" data-wave="先发" data-group="二、单笔交易"><div class="qhead"><strong>2.6 每期应还的算法</strong><span class="done" hidden>已提供</span></div><p class="note">这一笔的公式。标准规则见产品，不在这里另写一套。</p><textarea data-id="formula" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="三、收益桥"><div class="bar"><h2>三、收益桥</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="bridge" data-dept="财务" data-wave="补齐" data-group="三、收益桥"><div class="qhead"><strong>3.1 按放款本金拆开的收入和成本</strong><span class="done" hidden>已提供</span></div><p class="note">请区分最近 12 个月实际和全年预测。收入列加价、月费、手续费、逾期收费、锁机后回收。成本列终损、技术与系统、电话提醒与审核、当地运营和客服、市场人员、导购提成、税、收款通道、汇兑。导购提成是否已含在管理成本里，请说明。可上传表格。</p><textarea data-id="bridge" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="bridge"><div class="bar"><button type="button" class="pick" data-id="bridge">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="bridge" type="file" multiple /><div class="filelist" data-list="bridge"></div></div><hr /></article><article class="item" data-id="prepay" data-dept="财务" data-wave="补齐" data-group="三、收益桥"><div class="qhead"><strong>3.2 提前结清占比，以及结清后少收的费用</strong><span class="done" hidden>已提供</span></div><p class="note">实际发生的占比和少收金额。息费怎么算见产品里的提前还款。</p><textarea data-id="prepay" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="margin" data-dept="财务" data-wave="补齐" data-group="三、收益桥"><div class="qhead"><strong>3.3 净利比例的分母</strong><span class="done" hidden>已提供</span></div><p class="note">若对外讲过一个净利比例，请写明它占放款本金、占收入，还是其他口径。不要只给一个比例。</p><textarea data-id="margin" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="四、资产表现"><div class="bar"><h2>四、资产表现</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="def" data-dept="风险" data-wave="先发" data-group="四、资产表现"><div class="qhead"><strong>4.1 不良和终损的定义</strong><span class="done" hidden>已提供</span></div><p class="note">写明逾期天数、分子分母是否含已结清、核销规则。请说明当前不良和终损是已观察到的数，还是外推。</p><textarea data-id="def" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="vintage" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.2 按放款月的静态池</strong><span class="done" hidden>已提供</span></div><p class="note">从起量月到最近完整月末。请含笔数、放款金额、期限、品牌、新机或二手、城市、首付分档、通过率、第 1 到第 12 个月逾期金额、已核销、锁机后回收、提前结清。期限按实际产品，不要套成 3、6、9。已走完期限的月份和近三个月分开，近端终损请标注为预测。二手不要并进新机。有原表可只附原表。</p><textarea data-id="vintage" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="vintage"><div class="bar"><button type="button" class="pick" data-id="vintage">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="vintage" type="file" multiple /><div class="filelist" data-list="vintage"></div></div><hr /></article><article class="item" data-id="book" data-dept="财务" data-wave="先发" data-group="四、资产表现"><div class="qhead"><strong>4.3 在贷余额勾稽</strong><span class="done" hidden>已提供</span></div><p class="note">笔数、剩余本金、剩余期数、逾期分档。请给人民币和塔卡两列，并写汇率。累放请拆成在贷、已结清、已核销。</p><textarea data-id="book" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="book"><div class="bar"><button type="button" class="pick" data-id="book">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="book" type="file" multiple /><div class="filelist" data-list="book"></div></div><hr /></article><article class="item" data-id="cure" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.4 逾期后的锁机、回款和处置</strong><span class="done" hidden>已提供</span></div><p class="note">进入逾期后多少天锁机，锁机后多少天回款。解锁时点、是否收费、归还对象和残值记账，与「解锁与归还手机」保持同一口径。</p><textarea data-id="cure" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="cuts" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.5 按品牌、城市、门店、首付、期限的坏账对比</strong><span class="done" hidden>已提供</span></div><p class="note">主要城市以外请单独列出。可上传现有报表。</p><textarea data-id="cuts" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="cuts"><div class="bar"><button type="button" class="pick" data-id="cuts">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="cuts" type="file" multiple /><div class="filelist" data-list="cuts"></div></div><hr /></article><article class="item" data-id="fraud" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.6 重复进件和门店集中度</strong><span class="done" hidden>已提供</span></div><p class="note">同一客户、同一设备、同一收款账户、同一门店的重复情况。前 20 家门店占放款的比例。导购提成是否只在放款成功后发放。另给欺诈案件发生率及口径，以及伪冒、串货、门店集中发生后的处理。</p><textarea data-id="fraud" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="runoff" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.7 余额衰减</strong><span class="done" hidden>已提供</span></div><p class="note">每个放款月在放款当月末到第 12 个月末的剩余本金，核销前、含逾期。按实际期限分块，块名自己写。二手单独。未走到的月份留空。有原表可只附原表。</p><textarea data-id="runoff" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="runoff"><div class="bar"><button type="button" class="pick" data-id="runoff">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="runoff" type="file" multiple /><div class="filelist" data-list="runoff"></div></div><hr /></article><article class="item" data-id="fpd" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.8 首期逾期</strong><span class="done" hidden>已提供</span></div><p class="note">首期账单逾期满 7 天、满 30 天的笔数和本金。达到天数后即计入，其后还款不改。新机与二手分开。近三个月首期尚未走完的留空。</p><textarea data-id="fpd" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="fpd"><div class="bar"><button type="button" class="pick" data-id="fpd">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="fpd" type="file" multiple /><div class="filelist" data-list="fpd"></div></div><hr /></article><article class="item" data-id="segment" data-dept="风险" data-wave="补齐" data-group="四、资产表现"><div class="qhead"><strong>4.9 结构与逾期</strong><span class="done" hidden>已提供</span></div><p class="note">按期限、品牌、新旧、城市、首付、放款额、年龄。每个分类给累放金额、累放笔数、在贷余额，以及逾期 1 天、30 天、90 天以上余额。城市分主要城市和其他。期限和品牌按实际填写。</p><textarea data-id="segment" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="segment"><div class="bar"><button type="button" class="pick" data-id="segment">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="segment" type="file" multiple /><div class="filelist" data-list="segment"></div></div><hr /></article></section>
+<section class="card material" data-group="五、获客、机型与渠道"><div class="bar"><h2>五、获客、机型与渠道</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="person" data-dept="运营" data-wave="先发" data-group="五、获客、机型与渠道"><div class="qhead"><strong>5.0 获客来源</strong><span class="done" hidden>已提供</span></div><p class="note">门店导购、自然到店、线上投放、其他。按自然月填列进件、成交、放款及获客成本。成本含该来源的导购提成或线上投放，并计算占该来源放款本金的比例。与机型结构、成交渠道分别统计，不得加总。</p><textarea data-id="person" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="person"><div class="bar"><button type="button" class="pick" data-id="person">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="person" type="file" multiple /><div class="filelist" data-list="person"></div></div><hr /></article><article class="item" data-id="sku" data-dept="运营" data-wave="先发" data-group="五、获客、机型与渠道"><div class="qhead"><strong>5.0b 机型结构</strong><span class="done" hidden>已提供</span></div><p class="note">只填最近一个完整月末。品牌合计按品牌分行。具体型号只列该月放款本金前 20。新机和二手分开。</p><textarea data-id="sku" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="sku"><div class="bar"><button type="button" class="pick" data-id="sku">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="sku" type="file" multiple /><div class="filelist" data-list="sku"></div></div><hr /></article><article class="item" data-id="place" data-dept="运营" data-wave="先发" data-group="五、获客、机型与渠道"><div class="qhead"><strong>5.0c 成交渠道</strong><span class="done" hidden>已提供</span></div><p class="note">App、H5、门店。App 和 H5 为线上，门店为线下。按自然月填列进件、成交、放款。获客成本仅在获客来源中填列。</p><textarea data-id="place" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="place"><div class="bar"><button type="button" class="pick" data-id="place">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="place" type="file" multiple /><div class="filelist" data-list="place"></div></div><hr /></article></section>
+<section class="card material" data-group="五、渠道与品牌"><div class="bar"><h2>五、渠道与品牌</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="exclusive" data-dept="法务" data-wave="补齐" data-group="五、渠道与品牌"><div class="qhead"><strong>5.1 已签约品牌的合作协议要点</strong><span class="done" hidden>已提供</span></div><p class="note">品牌名称按实际填写。期限、排他范围、搭载率或销量承诺、品牌方可解除的情形。全文有保密义务的，写要点或约定见面查阅。</p><textarea data-id="exclusive" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="exclusive"><div class="bar"><button type="button" class="pick" data-id="exclusive">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="exclusive" type="file" multiple /><div class="filelist" data-list="exclusive"></div></div><hr /></article><article class="item" data-id="xiaomi" data-dept="法务" data-wave="补齐" data-group="五、渠道与品牌"><div class="qhead"><strong>5.2 新签约或非排他品牌的合作范围</strong><span class="done" hidden>已提供</span></div><p class="note">是否排他、已开放的门店和机型、品牌方可解除的情形。尚未签约的写进度。</p><textarea data-id="xiaomi" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="stores" data-dept="运营" data-wave="补齐" data-group="五、渠道与品牌"><div class="qhead"><strong>5.3 门店、导购与线下操作</strong><span class="done" hidden>已提供</span></div><p class="note">门店数量、自营或综合店、城市、月放款、导购人数、巡店频率。导购代填、虚假进件、与店主分单、飞单的发现、处罚和近 12 个月处理件数。进件和放款已按获客来源、机型结构、成交渠道分开，不在这里合并。</p><textarea data-id="stores" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="approve" data-dept="风险" data-wave="补齐" data-group="五、渠道与品牌"><div class="qhead"><strong>5.4 审批通过率</strong><span class="done" hidden>已提供</span></div><p class="note">分母是进件还是资料填齐。拒绝原因分布，以及 10 笔拒绝、10 笔通过的脱敏样例。放款前完成的核验：身份证、活体或人脸、SIM、设备号。年龄和职业是否设限。放款后到锁机前还看哪些变化。</p><textarea data-id="approve" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="approve"><div class="bar"><button type="button" class="pick" data-id="approve">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="approve" type="file" multiple /><div class="filelist" data-list="approve"></div></div><hr /></article><article class="item" data-id="attach" data-dept="运营" data-wave="补齐" data-group="五、渠道与品牌"><div class="qhead"><strong>5.5 品牌月销量和分期搭载率</strong><span class="done" hidden>已提供</span></div><p class="note">请附原始统计，并写明统计月份。搭载率的分母请注明是品牌出货还是可做分期的门店销量。</p><textarea data-id="attach" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="attach"><div class="bar"><button type="button" class="pick" data-id="attach">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="attach" type="file" multiple /><div class="filelist" data-list="attach"></div></div><hr /></article></section>
+<section class="card material" data-group="六、锁机、客诉与贷后"><div class="bar"><h2>六、锁机、客诉与贷后</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="lock" data-dept="技术" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.1 品牌官方锁</strong><span class="done" hidden>已提供</span></div><p class="note">写明是哪些品牌的官方锁。授权文件。锁的是主板还是系统账号，现场如何激活。断网、刷机、换板、拆机之后锁是否还在。误锁、解锁收费、解锁失败的处理和时限。</p><textarea data-id="lock" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="lock"><div class="bar"><button type="button" class="pick" data-id="lock">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="lock" type="file" multiple /><div class="filelist" data-list="lock"></div></div><hr /></article><article class="item" data-id="bypass" data-dept="风险" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.2 锁机、绕锁与误锁</strong><span class="done" hidden>已提供</span></div><p class="note">近 12 个月锁机成功率、失败原因、绕锁数量、误锁数量、解锁失败数量，以及因此核销的金额。</p><textarea data-id="bypass" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="ilock" data-dept="技术" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.3 二手机器使用的锁</strong><span class="done" hidden>已提供</span></div><p class="note">自研还是外购，与官方锁的权限差异，绕锁率，误锁后多久能解开。</p><textarea data-id="ilock" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="complaint" data-dept="运营" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.4 客诉与消费者保护</strong><span class="done" hidden>已提供</span></div><p class="note">近 6 个月投诉量，占放款笔数和在贷笔数的比例。事由结构：锁机、收费、押金、机器质量、解锁。升级到品牌或监管的数量。监管或消保对投诉率、回复时效的要求。品牌是否把客诉率当作继续合作的条件。台账请脱敏。</p><textarea data-id="complaint" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="complaint"><div class="bar"><button type="button" class="pick" data-id="complaint">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="complaint" type="file" multiple /><div class="filelist" data-list="complaint"></div></div><hr /></article><article class="item" data-id="collect" data-dept="运营" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.5 贷后安排</strong><span class="done" hidden>已提供</span></div><p class="note">电话提醒的时点、是否上门或委托第三方。当地审核、提醒、客服、市场的人数，以及这些费用是否已包含在管理成本里。</p><textarea data-id="collect" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="quality" data-dept="运营" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.6 非客户违约的机器质量</strong><span class="done" hidden>已提供</span></div><p class="note">分期继续还是终止，损失由品牌、店主还是贵司承担。</p><textarea data-id="quality" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="delivery" data-dept="运营" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.7 拆机与转卖</strong><span class="done" hidden>已提供</span></div><p class="note">如何确认机器交给该客户。拆机、换板、转卖如何发现，当地规定如何认定，损失由品牌、店主还是贵司承担。新机和二手都写。</p><textarea data-id="delivery" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="unlockReturn" data-dept="运营" data-wave="补齐" data-group="六、锁机、客诉与贷后"><div class="qhead"><strong>6.8 解锁与归还手机</strong><span class="done" hidden>已提供</span></div><p class="note">正常还清、提前结清、逾期取回三种情形下，何时解锁、是否收费、由谁操作。手机在什么条件下归还：归还给客户、店主还是贵司，验收标准，残值记在谁的账上。近 12 个月归还笔数和对应本金。</p><textarea data-id="unlockReturn" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="七、账户、支付与外汇"><div class="bar"><h2>七、账户、支付与外汇</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="accts" data-dept="财务" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.1 收款账户和付款账户</strong><span class="done" hidden>已提供</span></div><p class="note">客户还款进哪个账户，垫付给店主从哪个账户出。请说明有无与经营无关的资金进出。</p><textarea data-id="accts" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="channel" data-dept="财务" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.2 收款通道、费率与支付风险</strong><span class="done" hidden>已提供</span></div><p class="note">最近三个月通道费账单。付款若走银行，请注明。近 12 个月通道中断、重复扣款、错账、商户号冻结或限额的情况，以及备用通道。</p><textarea data-id="channel" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="channel"><div class="bar"><button type="button" class="pick" data-id="channel">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="channel" type="file" multiple /><div class="filelist" data-list="channel"></div></div><hr /></article><article class="item" data-id="inflow" data-dept="资金" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.3 资金进入展业地的路径</strong><span class="done" hidden>已提供</span></div><p class="note">币种、科目（资本金、股东借款或其他）、已办的备案、在途时间。已投入资金请对应到银行凭证，可上传。</p><textarea data-id="inflow" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="inflow"><div class="bar"><button type="button" class="pick" data-id="inflow">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="inflow" type="file" multiple /><div class="filelist" data-list="inflow"></div></div><hr /></article><article class="item" data-id="outflow" data-dept="资金" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.4 还款和利润汇出</strong><span class="done" hidden>已提供</span></div><p class="note">实际汇出过的金额、尚未汇出的金额、平均在途时间。审批文件见面核对。塔卡换成人民币或美元的现行做法。</p><textarea data-id="outflow" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="fxgl" data-dept="财务" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.5 汇兑损益底稿</strong><span class="done" hidden>已提供</span></div><p class="note">按月列出放款汇率、回收汇率、未回收余额的重估。可上传。</p><textarea data-id="fxgl" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="fxgl"><div class="bar"><button type="button" class="pick" data-id="fxgl">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="fxgl" type="file" multiple /><div class="filelist" data-list="fxgl"></div></div><hr /></article><article class="item" data-id="tax" data-dept="财务" data-wave="补齐" data-group="七、账户、支付与外汇"><div class="qhead"><strong>7.6 税种及缴纳主体</strong><span class="done" hidden>已提供</span></div><textarea data-id="tax" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="八、二手"><div class="bar"><h2>八、二手</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="usedmix" data-dept="风险" data-wave="先发" data-group="八、二手"><div class="qhead"><strong>8.1 二手单独成池</strong><span class="done" hidden>已提供</span></div><p class="note">品牌和型号按实际填写。笔数和金额占比、件均、期限、首付、逾期和回收。不要并进新机平均。可上传表格。</p><textarea data-id="usedmix" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="usedmix"><div class="bar"><button type="button" class="pick" data-id="usedmix">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="usedmix" type="file" multiple /><div class="filelist" data-list="usedmix"></div></div><hr /></article><article class="item" data-id="source" data-dept="运营" data-wave="补齐" data-group="八、二手"><div class="qhead"><strong>8.2 货源和货权</strong><span class="done" hidden>已提供</span></div><p class="note">店主发票和完税证明是否作为进件条件。合同如何约定货权。若机器未完税，对锁机、取回和资产是否有影响。</p><textarea data-id="source" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="recycle" data-dept="运营" data-wave="补齐" data-group="八、二手"><div class="qhead"><strong>8.3 回收业务的现状</strong><span class="done" hidden>已提供</span></div><p class="note">已经在做的，写流程和损益。还在计划中的，本次额度里不计入。</p><textarea data-id="recycle" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="usedReturn" data-dept="运营" data-wave="补齐" data-group="八、二手"><div class="qhead"><strong>8.5 二手质量与退换货</strong><span class="done" hidden>已提供</span></div><p class="note">二手进件时的成色、功能和质检标准。退货、换货的期限、条件和流程，分期继续还是终止。近 12 个月退换笔数、金额，以及损失由品牌、店主还是贵司承担。新机退换若规则不同，分开写。</p><textarea data-id="usedReturn" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="九、系统与对接"><div class="bar"><h2>九、系统与对接</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="deploy" data-dept="技术" data-wave="补齐" data-group="九、系统与对接"><div class="qhead"><strong>9.1 进件、审批、锁机、账务分别部署在哪个城市，数据是否传到展业地以外，备份和权限如何安排</strong><span class="done" hidden>已提供</span></div><textarea data-id="deploy" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="export" data-dept="技术" data-wave="补齐" data-group="九、系统与对接"><div class="qhead"><strong>9.2 字段导出情况</strong><span class="done" hidden>已提供</span></div><p class="note">申请号、门店、品牌、型号、新机或二手、期限、首付、放款额、还款计划、实还、逾期天数、锁机状态、核销、回收。本轮说明能否导出即可，先不要发全量明细。</p><textarea data-id="export" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="recon" data-dept="财务" data-wave="补齐" data-group="九、系统与对接"><div class="qhead"><strong>9.3 账务与银行、通道的对账频率，以及最近一次差异</strong><span class="done" hidden>已提供</span></div><textarea data-id="recon" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="recon"><div class="bar"><button type="button" class="pick" data-id="recon">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="recon" type="file" multiple /><div class="filelist" data-list="recon"></div></div><hr /></article><article class="item" data-id="appstore" data-dept="技术" data-wave="补齐" data-group="九、系统与对接"><div class="qhead"><strong>9.4 应用上架与下架</strong><span class="done" hidden>已提供</span></div><p class="note">客户 App 或进件工具的上架渠道、发包要求、当前版本。下架或被拒的时间、原因和恢复方式。没有独立 App 的，写明实际使用的载体。</p><textarea data-id="appstore" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article></section>
+<section class="card material" data-group="十、这次用款"><div class="bar"><h2>十、这次用款</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="plan" data-dept="财务" data-wave="补齐" data-group="十、这次用款"><div class="qhead"><strong>10.1 未来 12 个月分品牌的放款计划</strong><span class="done" hidden>已提供</span></div><p class="note">台数、件均、期限、所需投放、预计在贷峰值。请说明台数是品牌销量还是可放款，搭载率怎么取。</p><textarea data-id="plan" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="ticket" data-dept="财务" data-wave="补齐" data-group="十、这次用款"><div class="qhead"><strong>10.2 自有资金、已有借款、希望合作的额度、期限和币种</strong><span class="done" hidden>已提供</span></div><p class="note">合作资产是大盘按比例切分，还是指定品牌、指定门店。若是子集，请说明历史表现是否差于大盘。</p><textarea data-id="ticket" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="enhance" data-dept="财务" data-wave="补齐" data-group="十、这次用款"><div class="qhead"><strong>10.3 担保主体的增信</strong><span class="done" hidden>已提供</span></div><p class="note">担保主体提供的保证、回购、差额补足或其他。写担保范围、期限、净资产、在途担保和可执行财产。借款主体自身不出具这份保证。</p><textarea data-id="enhance" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="ringfence" data-dept="财务" data-wave="补齐" data-group="十、这次用款"><div class="qhead"><strong>10.4 收款账户监管和逐笔对应</strong><span class="done" hidden>已提供</span></div><p class="note">哪些收款账户可以监管，应收账款能否对应到每一笔设备。</p><textarea data-id="ringfence" rows="3" placeholder="说明，或注明对应文件"></textarea><hr /></article><article class="item" data-id="funders" data-dept="财务" data-wave="补齐" data-group="十、这次用款"><div class="qhead"><strong>10.5 其他合作资金</strong><span class="done" hidden>已提供</span></div><p class="note">机构、机构类型、累计放款、合作额度、合作方式、在贷余额、开始年月。没有则写无。</p><textarea data-id="funders" rows="3" placeholder="说明，或注明对应文件"></textarea><div class="files" data-files="funders"><div class="bar"><button type="button" class="pick" data-id="funders">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="funders" type="file" multiple /><div class="filelist" data-list="funders"></div></div><hr /></article></section>
+<section class="card material" data-group="数据表"><div class="bar"><h2>数据表</h2><button type="button" class="submit-group">提交本栏</button><span class="stamp note">未填完也可以先交</span></div><article class="item" data-id="tpl-risk" data-dept="风险" data-wave="数据" data-group="数据表"><div class="qhead"><strong>数.1 资产质量原表</strong><span class="done" hidden>已提供</span></div><p class="note">账龄、迁徙、余额衰减、首期逾期如有系统原表，可附上。没有逐日回收的列留空。未观察到的月份留空。</p><textarea data-id="tpl-risk" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="tpl-risk"><div class="bar"><button type="button" class="pick" data-id="tpl-risk">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="tpl-risk" type="file" multiple /><div class="filelist" data-list="tpl-risk"></div></div><hr /></article><article class="item" data-id="tpl-asset" data-dept="财务" data-wave="数据" data-group="数据表"><div class="qhead"><strong>数.2 收益与成本原表</strong><span class="done" hidden>已提供</span></div><p class="note">资金成本、随单运营和已结清资产的实还月数。对照年化只作对照。人员、税、汇兑不摊入放款月。</p><textarea data-id="tpl-asset" rows="2" placeholder="补充说明，可留空"></textarea><div class="files" data-files="tpl-asset"><div class="bar"><button type="button" class="pick" data-id="tpl-asset">选择文件</button><span class="note">可多选</span></div><input class="file" data-id="tpl-asset" type="file" multiple /><div class="filelist" data-list="tpl-asset"></div></div><hr /></article></section>
+  <p id="empty" class="note" hidden>这一范围的材料都已提供。</p>
+</main>
+<footer>
+  <p id="foot-unit">金额单位：人民币。按角色或按栏提交，不必等全部填完。</p>
+  <p>数字请写到最近一个自然月末，并注明币种、汇率和统计口径。客户身份信息请脱敏。不收集员工激励。</p>
+</footer>
+<script>
+const MAX = 400 * 1024;
+const KEY = "phone-installment-dd-full-v1";
+const state = Object.assign({ currency: "人民币", filler: "", scope: "全部", dept: "全部", onlyOpen: false, submitted: {}, answers: {}, book: null }, JSON.parse(localStorage.getItem(KEY) || "{}"));
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* 文件过大时只留文字 */ } }
+function $(id) { return document.getElementById(id); }
+function stamp() { return new Date().toLocaleString("zh-CN", { hour12: false }); }
+function answer(id) { return state.answers[id] || { text: "", files: [] }; }
+function filled(el) {
+  const id = el.dataset.id;
+  const a = answer(id);
+  const text = (a.text || "").trim();
+  const files = (a.files || []).length;
+  const kind = el.querySelector("input.file") ? (el.querySelector("textarea").rows === 2 ? "file-or-both" : "both") : "text";
+  if (!el.querySelector("input.file")) return text.length > 0;
+  return text.length > 0 || files > 0;
 }
-function persist() {
-  localStorage.setItem(KEY, JSON.stringify(saved));
+function formatSize(n) {
+  if (n < 1024) return n + " B";
+  if (n < 1024 * 1024) return Math.round(n / 1024) + " KB";
+  return (n / 1024 / 1024).toFixed(1) + " MB";
 }
-function visible() {
-  return ITEMS.filter(item => role === "全部" || item.dept === role);
-}
-function renderRoles() {
-  const nav = document.getElementById("roles");
-  nav.innerHTML = "";
-  ["全部", ...ORDER].forEach(name => {
-    const b = document.createElement("button");
-    b.textContent = name === "业务负责人" ? "负责人" : name;
-    b.className = name === role ? "active" : "";
-    b.onclick = () => { role = name; render(); };
-    nav.appendChild(b);
+function renderFiles(el) {
+  const id = el.dataset.id;
+  const box = el.querySelector(".filelist");
+  if (!box) return;
+  const files = answer(id).files || [];
+  box.innerHTML = files.map((f, i) =>
+    '<div class="fileline"><span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis">' + f.name + '</span><span class="note">' + formatSize(f.size) + (f.stored ? " · 已存入" : " · 仅文件名") + '</span><button type="button" data-rm="' + i + '">移除</button></div>'
+  ).join("");
+  box.querySelectorAll("button").forEach(btn => btn.onclick = () => {
+    const a = answer(id);
+    a.files.splice(Number(btn.dataset.rm), 1);
+    state.answers[id] = a;
+    save(); paint();
   });
 }
-function render() {
-  renderRoles();
-  const root = document.getElementById("list");
-  const rows = visible();
-  const groups = [];
-  rows.forEach(item => { if (!groups.includes(item.group)) groups.push(item.group); });
-  root.innerHTML = groups.map(group => {
-    const items = rows.filter(item => item.group === group);
-    const body = items.map(item => `
-      <div class="item">
-        <div class="meta">${esc(item.no)} · ${esc(item.dept)}</div>
-        <label for="f-${esc(item.id)}">${esc(item.prompt)}</label>
-        ${item.hint ? `<div class="note">${esc(item.hint)}</div>` : ""}
-        <textarea id="f-${esc(item.id)}" data-id="${esc(item.id)}" placeholder="说明，或注明对应文件"></textarea>
-      </div>`).join("");
-    return `<section class="card"><h2>${esc(group)}</h2><div class="bar"><button class="submit" data-group="${esc(group)}">提交本栏</button><span class="note">只包含本栏已填写的内容</span></div>${body}</section>`;
-  }).join("") + (role !== "全部" ? `<div class="bar"><button class="submit" id="submit-role">提交${esc(role === "业务负责人" ? "负责人" : role)}</button><span class="note">未填完也可以交，空项不会写进文件</span></div>` : `<p class="note">先点选角色，再提交该角色的内容。每一栏也可以单独提交。</p>`);
-  root.querySelectorAll("textarea").forEach(el => {
-    const id = el.dataset.id;
-    el.value = saved[id] || "";
-    el.addEventListener("input", () => { saved[id] = el.value; persist(); });
+function applyFilters() {
+  const items = [...document.querySelectorAll(".item")];
+  let shown = 0;
+  const groupsShown = new Set();
+  items.forEach(el => {
+    const okScope = state.scope !== "数据" || el.dataset.wave === "数据";
+    const okDept = state.dept === "全部" || el.dataset.dept === state.dept;
+    const okOpen = !state.onlyOpen || !filled(el);
+    const show = okScope && okDept && okOpen;
+    el.hidden = !show;
+    if (show) { shown += 1; groupsShown.add(el.dataset.group); }
+    const mark = el.querySelector(".done");
+    mark.hidden = !filled(el);
   });
-  root.querySelectorAll("button.submit").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const group = btn.dataset.group;
-      const picked = rows.filter(item => {
-        if (group && item.group !== group) return false;
-        return (saved[item.id] || "").trim().length > 0;
-      });
-      if (!picked.length) { alert("这一范围还没有填写内容。"); return; }
-      const who = role === "全部" ? (group || "清单") : (role === "业务负责人" ? "负责人" : role);
-      const lines = [`手机分期尽调`, `角色：${who}`, `时间：${new Date().toLocaleString("zh-CN", { hour12: false })}`, ""];
-      picked.forEach(item => {
-        lines.push(`${item.no} ${item.prompt}`);
-        lines.push(saved[item.id].trim());
-        lines.push("");
-      });
-      const blob = new Blob([lines.join("\n")], { type: "text/plain;charset=utf-8" });
-      const a = document.createElement("a");
-      const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, "");
-      a.href = URL.createObjectURL(blob);
-      a.download = `手机分期尽调-${who}-${stamp}.txt`;
-      a.click();
-      URL.revokeObjectURL(a.href);
-    });
+  document.querySelectorAll(".material").forEach(sec => {
+    sec.hidden = !groupsShown.has(sec.dataset.group);
+    const times = [...sec.querySelectorAll(".item")].filter(el => !el.hidden && state.submitted[el.dataset.id]).map(el => state.submitted[el.dataset.id]);
+    const latest = times.slice().sort().at(-1);
+    sec.querySelector(".stamp").textContent = latest ? ("已于 " + latest + " 提交，可再改后再交") : "未填完也可以先交";
+  });
+  $("empty").hidden = shown !== 0;
+  const role = $("role-submit");
+  if (state.dept === "全部") {
+    role.innerHTML = '<span class="note">先点选角色，再提交该角色的内容。每一栏也可以单独提交。</span>';
+  } else {
+    role.innerHTML = '<button type="button" class="primary" id="submit-role">提交' + state.dept + '</button><span class="note">只提交当前角色看得到的内容。未填完也可以交，之后可再交一次。</span>';
+    $("submit-role").onclick = () => submit([...document.querySelectorAll(".item")].filter(el => !el.hidden).map(el => el.dataset.id));
+  }
+  const all = document.querySelectorAll(".item").length;
+  const nFilled = [...document.querySelectorAll(".item")].filter(filled).length;
+  const nFiles = Object.values(state.answers).reduce((s, a) => s + ((a.files || []).length), 0) + (state.book ? 1 : 0);
+  const nSub = Object.keys(state.submitted).length;
+  $("st-filled").textContent = nFilled + "/" + all;
+  $("st-files").textContent = String(nFiles);
+  $("st-sub").textContent = nSub + "/" + all;
+  $("foot-unit").textContent = "金额单位：" + state.currency + (state.filler ? " · 对接人 " + state.filler : "") + "。按角色或按栏提交，不必等全部填完。";
+}
+function paint() {
+  document.querySelectorAll(".item").forEach(el => {
+    const a = answer(el.dataset.id);
+    const ta = el.querySelector("textarea");
+    if (document.activeElement !== ta) ta.value = a.text || "";
+    renderFiles(el);
+  });
+  renderBook();
+  applyFilters();
+}
+function renderBook() {
+  const box = $("book-line");
+  if (!state.book) { box.innerHTML = ""; return; }
+  const b = state.book;
+  box.innerHTML = '<div class="fileline"><span style="flex:1">' + b.name + '</span><span class="note">' + formatSize(b.size) + (b.stored ? " · 已存入" : " · 仅文件名") + '</span>' + (b.dataUrl ? '<button type="button" id="book-dl">下载这份</button>' : '') + '<button type="button" id="book-rm">移除</button></div>';
+  const dl = $("book-dl");
+  if (dl) dl.onclick = () => {
+    const a = document.createElement("a");
+    a.href = b.dataUrl; a.download = b.name; a.click();
+  };
+  $("book-rm").onclick = () => { state.book = null; save(); paint(); };
+}
+function readFiles(list, done) {
+  const incoming = [...list];
+  const out = [];
+  let pending = incoming.length;
+  if (!pending) return;
+  incoming.forEach(file => {
+    const rec = { name: file.name, size: file.size, stored: false };
+    if (file.size > MAX) { out.push(rec); if (--pending === 0) done(out); return; }
+    const reader = new FileReader();
+    reader.onload = () => { rec.stored = typeof reader.result === "string"; rec.dataUrl = rec.stored ? reader.result : undefined; out.push(rec); if (--pending === 0) done(out); };
+    reader.onerror = () => { out.push(rec); if (--pending === 0) done(out); };
+    reader.readAsDataURL(file);
   });
 }
-render();
+function submit(ids) {
+  if (!ids.length) return;
+  const at = stamp();
+  ids.forEach(id => { state.submitted[id] = at; });
+  save();
+  const lines = ["手机分期尽调", "时间：" + at, "金额单位：" + state.currency, state.filler ? ("对接人：" + state.filler) : "", ""];
+  ids.forEach(id => {
+    const el = document.querySelector('.item[data-id="' + id + '"]');
+    const a = answer(id);
+    const text = (a.text || "").trim();
+    const files = a.files || [];
+    if (!text && !files.length) return;
+    lines.push(el.querySelector("strong").textContent);
+    if (text) lines.push(text);
+    files.forEach(f => lines.push("文件：" + f.name + (f.stored ? "" : "（仅文件名）")));
+    lines.push("");
+  });
+  const blob = new Blob([lines.filter(x => x !== null).join("\n")], { type: "text/plain;charset=utf-8" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "手机分期尽调-" + at.replace(/[/:\s]/g, "") + ".txt";
+  a.click();
+  paint();
+}
+document.querySelectorAll("textarea").forEach(ta => {
+  ta.addEventListener("input", () => {
+    const id = ta.dataset.id;
+    const a = answer(id);
+    a.text = ta.value;
+    state.answers[id] = a;
+    save();
+    applyFilters();
+  });
+});
+document.querySelectorAll("button.pick").forEach(btn => btn.onclick = () => btn.parentElement.parentElement.querySelector("input.file").click());
+document.querySelectorAll("input.file").forEach(input => input.addEventListener("change", () => {
+  const id = input.dataset.id;
+  readFiles(input.files, files => {
+    const a = answer(id);
+    a.files = (a.files || []).concat(files);
+    state.answers[id] = a;
+    save();
+    input.value = "";
+    paint();
+  });
+}));
+document.querySelectorAll(".submit-group").forEach(btn => btn.onclick = () => {
+  const sec = btn.closest(".material");
+  submit([...sec.querySelectorAll(".item")].filter(el => !el.hidden).map(el => el.dataset.id));
+});
+document.querySelectorAll(".scope").forEach(btn => btn.onclick = () => {
+  state.scope = btn.dataset.scope;
+  document.querySelectorAll(".scope").forEach(b => b.classList.toggle("active", b === btn));
+  save(); applyFilters();
+});
+document.querySelectorAll(".dept").forEach(btn => btn.onclick = () => {
+  state.dept = btn.dataset.dept;
+  document.querySelectorAll(".dept").forEach(b => b.classList.toggle("active", b === btn));
+  save(); applyFilters();
+});
+$("only-open").onchange = () => { state.onlyOpen = $("only-open").checked; save(); applyFilters(); };
+$("currency").onchange = () => { state.currency = $("currency").value; save(); applyFilters(); };
+$("filler").oninput = () => { state.filler = $("filler").value; save(); applyFilters(); };
+$("pick-book").onclick = () => $("book-file").click();
+$("book-file").onchange = () => {
+  const file = $("book-file").files[0];
+  if (!file) return;
+  readFiles([file], files => { state.book = files[0]; save(); $("book-file").value = ""; paint(); });
+};
+$("currency").value = state.currency;
+$("filler").value = state.filler || "";
+$("only-open").checked = !!state.onlyOpen;
+document.querySelectorAll(".scope").forEach(b => b.classList.toggle("active", b.dataset.scope === state.scope));
+document.querySelectorAll(".dept").forEach(b => b.classList.toggle("active", b.dataset.dept === state.dept));
+paint();
 </script>
 </body>
 </html>
