@@ -49,7 +49,7 @@
     <h2>清单 Excel</h2>
     <p class="note">先下载空白模板，在 Excel 里备好数字，再把同一份文件上传。小于 400KB 会整份留下，并可再下载；更大的只记录文件名。</p>
     <div class="bar">
-      <a class="primary" href="template.xlsx" download="手机分期尽调清单.xlsx" style="text-decoration:none;border-radius:999px;padding:6px 12px;background:#1f4d3a;color:#fff;">下载空白模板</a>
+      <button type="button" class="primary" id="download-template">下载空白模板</button>
       <button type="button" id="pick-book">上传已填清单</button>
       <input id="book-file" class="file" type="file" accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
     </div>
@@ -350,6 +350,24 @@ $("only-open").onchange = () => { state.onlyOpen = $("only-open").checked; save(
 $("currency").onchange = () => { state.currency = $("currency").value; save(); applyFilters(); };
 $("filler").oninput = () => { state.filler = $("filler").value; save(); applyFilters(); };
 $("pick-book").onclick = () => $("book-file").click();
+$("download-template").onclick = async () => {
+  const btn = $("download-template");
+  btn.disabled = true;
+  try {
+    const res = await fetch("template-20261119.xlsx", { cache: "no-store" });
+    if (!res.ok) throw new Error(String(res.status));
+    const blob = await res.blob();
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "手机分期尽调清单.xlsx";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+  } catch (e) {
+    window.location.href = "template-20261119.xlsx";
+  } finally {
+    btn.disabled = false;
+  }
+};
 $("book-file").onchange = () => {
   const file = $("book-file").files[0];
   if (!file) return;
